@@ -1,4 +1,4 @@
-# This is the official list of Simbul's Wild Magic authors for copyright purposes.
+# This is the official list of Simbul's Creature Aide authors for copyright purposes.
 
 # DnD5e Helpers Team _(Original code)_:
 - trioderegion (matt.haentschke@gmail.com)
