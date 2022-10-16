@@ -4,16 +4,17 @@
 
 # Simbul's Creature Aide
 A Foundry VTT module that gives the GM the ability to:
-- Legendary Actions
+## Legendary Actions
   - Prompts GM with available legendary actions in-between combatant turns. 
   - Tracks current available uses of legendary actions.
   - And reset the used legendary actions to their max on the end of their turn in combat.
     - Note: RAW indicates this should be at the beginning of their turn, but due to timing issues with the legendary action helper, this has been moved to the end of the turn and has no mechanical effect on gameplay.
     
-- Lair Actions
+## Lair Actions
   - Prompts GM with available Lair actions at the creature's designated lair initiative.
 - A creature's legendary and lair actions will be indexed when first added to the tracker. Only items with an activation cost of "Legendary Action" or "Lair Action" will be indexed.
-- Recharge Abilities for GM's
+
+## Recharge Abilities for GM's
   - At either start or end of the turn.
   - For abilities with a "d6 recharge" on every turn.
   - Configurable to hide the roll.
