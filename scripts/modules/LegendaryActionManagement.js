@@ -36,12 +36,12 @@ export class LegendaryActionManagement {
     static settings(){
         const config = true;
         const settingsData = {
-        legendaryActionRecharge : {
-            scope : "world", config, group: "npc-features", default: false, type: Boolean,
-        },
-        legendaryActionHelper : {
-            scope : "world", config, group: "npc-features", default: false, type: Boolean,
-        }
+            legendaryActionRecharge : {
+                scope : "world", config, group: "npc-features", default: false, type: Boolean,
+            },
+            legendaryActionHelper : {
+                scope : "world", config, group: "npc-features", default: false, type: Boolean,
+            }
         };
 
         MODULE.applySettings(settingsData);
@@ -147,7 +147,7 @@ export class LegendaryActionManagement {
         if (!!legact && legact.value !== null) {
             /* only reset if needed */
             if (legact.value < legact.max) {
-                ui.notifications.info(game.i18n.format("DND5EH.CombatLegendary_notification", {max: legact.max, tokenName: combatant.token.name}))
+                ui.notifications.info(game.i18n.format("SCA.CombatLegendary_notification", {max: legact.max, tokenName: combatant.token.name}))
 
                 /* send the reset update and sheet refresh */
                 queueUpdate( async () => {

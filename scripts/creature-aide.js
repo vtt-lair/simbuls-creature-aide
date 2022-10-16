@@ -10,13 +10,15 @@ import { logger } from './logger.js';
 import { AbilityRecharge } from './modules/AbilityRecharge.js';
 import { LegendaryActionManagement } from './modules/LegendaryActionManagement.js';
 import { LairActionManagement } from './modules/LairActionManagement.js';
+import { Regeneration } from './modules/Regeneration.js';
 
 const SUB_MODULES = {
     MODULE,
     logger,
     AbilityRecharge,
     LegendaryActionManagement,
-    LairActionManagement
+    LairActionManagement,
+    Regeneration
 };
 
 /*
