@@ -31,10 +31,7 @@ A Foundry VTT module that gives the GM the ability to:
     - Matches and active effect of the specified name (case specific)
   ![image](https://user-images.githubusercontent.com/33215552/196030495-5758a842-f651-43f9-9816-3d9a23d40864.png)
 
-
-Originally part of [DnD 5e Helpers](https://github.com/trioderegion/dnd5e-helpers)
-
 ### Settings
 ![image](https://user-images.githubusercontent.com/33215552/196030576-5161003e-181e-4069-bfec-60e640d608f6.png)
 
-
+Originally part of [DnD 5e Helpers](https://github.com/trioderegion/dnd5e-helpers)
