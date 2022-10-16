@@ -18,7 +18,8 @@ A Foundry VTT module that gives the GM the ability to:
   - At either start or end of the turn.
   - For abilities with a "d6 recharge" on every turn.
   - Configurable to hide the roll.
-- Automatic Regeneration
+
+## Automatic Regeneration
   - Automatically checks actors with the Regeneration or Self-Repair features
   - Searches the these features for the phrase "X hit points", where X can be a static value or a dice formula
     - The search phrase is localized for your supported language.
@@ -34,27 +35,6 @@ A Foundry VTT module that gives the GM the ability to:
 Originally part of [DnD 5e Helpers](https://github.com/trioderegion/dnd5e-helpers)
 
 ### Settings
-![image](https://user-images.githubusercontent.com/33215552/195983860-dc75d9f6-19bb-4bcd-975a-38e39aa2a25a.png)
+![image](https://user-images.githubusercontent.com/33215552/196030576-5161003e-181e-4069-bfec-60e640d608f6.png)
 
-### Details
-- To enable, select the 'Enabled' option for 'Wild Magic Auto-Detect' on the module's config page.
-- Make sure to setup a Wild Magic Surge Table and supply the name of the table so that it draws from said table.
-- Change the Tides of Chaos feature name, if you changed on the character.
-
-- To enable it for a character, choose which type of Wild Surge the character should use under 'Special Traits' on the character sheet.
-
-  ![image](https://user-images.githubusercontent.com/33215552/195983919-5bf3b4b1-5f8e-40c9-b60c-d095125a4a85.png)
-  
-  ![image](https://user-images.githubusercontent.com/33215552/195983897-b23ee102-c53c-46eb-86ff-b06e38bdd6e3.png)
-- Triggers on _any_ reduction in current spell slots from a character with the 'Wild Magic Surge' special trait
-- Optional homebrews
-  - More Surges - a surge triggers on a roll <= spell level. Also recharges Tides of Chaos.
-  - Volatile Surges - Similar to More, but adds 1d4 to the spell level if Tides of Chaos has been expended.
-  - Accumulating Surges - Each time a spell is cast a count is accumulated. Once a surge happens, this count is reset to 0 and it starts over again.
-  - The homebrew variants look for the designated Tides of Chaos feature and expects it to have "X uses per long rest". Will also recharge an actor resource of the same name, if present.
-- Blind draw surge table results, which hides the results of the surge from the players.
-
-![image](https://user-images.githubusercontent.com/33215552/195983945-4141caf4-9d39-4921-9663-24afd65e217a.png)
-
-![image](https://user-images.githubusercontent.com/33215552/195983952-665ff37b-20e8-466e-90c6-296d43942830.png)
 
