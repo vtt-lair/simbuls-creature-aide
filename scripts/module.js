@@ -1,4 +1,5 @@
 import { logger } from './logger.js';
+import { HelpersSettingsConfig } from './apps/config-app.js';
 
 const NAME = "simbuls-creature-aide";
 const PATH = `/modules/${NAME}`;
@@ -13,6 +14,7 @@ export class MODULE{
     static async register(){
         logger.info("Initializing Module");
         MODULE.globals();
+        MODULE.settings();
     }
 
     static async build(){
@@ -23,6 +25,16 @@ export class MODULE{
 
     static globals() {
         game.dnd5e.npcactions = {};
+    }
+
+    static settings() {
+        game.settings.registerMenu(MODULE.data.name, "helperOptions", {
+            name : MODULE.format("setting.ConfigOption.name"),
+            label : MODULE.format("setting.ConfigOption.label"),
+            icon : "fas fa-user-cog",
+            type : HelpersSettingsConfig,
+            restricted : false,
+        });
     }
 
     /**
@@ -72,4 +84,39 @@ export class MODULE{
     static isFirstGM(){
         return game.user.id === MODULE.firstGM()?.id;
     }
+
+    /*
+    * Helper function for quickly creating a simple dialog with labeled buttons and associated data. 
+    * Useful for allowing a choice of actors to spawn prior to `warpgate.spawn`.
+    *
+    * @param `data` {Array of Objects}: Contains two keys `label` and `value`. Label corresponds to the 
+    *     button's text. Value corresponds to the return value if this button is pressed. Ex. 
+    *     `const data = buttons: [{label: 'First Choice, value: {token {name: 'First'}}, {label: 'Second Choice',
+    *         value: {token: {name: 'Second}}}]`
+    * @param `direction` {String} (optional): `'column'` or `'row'` accepted. Controls layout direction of dialog.
+    */
+    static async buttonDialog(data, direction = 'row') {
+        return await new Promise(async (resolve) => {
+            let buttons = {}, dialog;
+
+            data.buttons.forEach((button) => {
+                buttons[button.label] = {
+                    label: button.label,
+                    callback: () => resolve(button.value)
+                }
+            });
+
+            dialog = new Dialog({
+                title: data.title,
+                content: data.content,
+                buttons,
+                close: () => resolve("Exit, No Button Click")
+            }, {
+                /*width: '100%',*/ height: '100%' 
+            });
+
+            await dialog._render(true);
+            dialog.element.find('.dialog-buttons').css({'flex-direction': direction});
+        });
+  }
 }

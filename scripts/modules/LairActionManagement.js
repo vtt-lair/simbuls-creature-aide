@@ -30,10 +30,10 @@ export class LairActionManagement {
     }
 
     static settings(){
-        const config = true;
+        const config = false;
         const settingsData = {
             lairActionHelper : {
-                scope : "world", config, group: "npc-features", default: 0, type: Boolean,
+                scope : "world", config, group: "lair", default: 0, type: Boolean,
             }
         };
 

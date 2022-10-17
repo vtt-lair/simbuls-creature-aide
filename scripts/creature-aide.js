@@ -11,6 +11,7 @@ import { AbilityRecharge } from './modules/AbilityRecharge.js';
 import { LegendaryActionManagement } from './modules/LegendaryActionManagement.js';
 import { LairActionManagement } from './modules/LairActionManagement.js';
 import { Regeneration } from './modules/Regeneration.js';
+import { UndeadFortitude } from './modules/UndeadFortitude.js';
 
 const SUB_MODULES = {
     MODULE,
@@ -18,7 +19,8 @@ const SUB_MODULES = {
     AbilityRecharge,
     LegendaryActionManagement,
     LairActionManagement,
-    Regeneration
+    Regeneration,
+    UndeadFortitude
 };
 
 /*

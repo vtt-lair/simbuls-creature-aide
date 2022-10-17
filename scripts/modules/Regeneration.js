@@ -13,13 +13,13 @@ export class Regeneration {
     }
 
     static settings() {
-        const config = true;
+        const config = false;
         const settingsData = {
             autoRegen : {
-                scope : "world", config, group: "npc-features", default: 0, type: Boolean,
+                scope : "world", config, group: "regen", default: 0, type: Boolean,
             },
             regenBlock : {
-                scope : "world", config, group: "npc-features", default: MODULE.localize('SCA.regenBlock_default'), type: String,
+                scope : "world", config, group: "regen", default: MODULE.localize('SCA.regenBlock_default'), type: String,
             }
         };
 

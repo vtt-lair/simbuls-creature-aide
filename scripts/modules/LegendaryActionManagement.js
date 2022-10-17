@@ -34,13 +34,13 @@ export class LegendaryActionManagement {
 
     /** @public */
     static settings(){
-        const config = true;
+        const config = false;
         const settingsData = {
             legendaryActionRecharge : {
-                scope : "world", config, group: "npc-features", default: false, type: Boolean,
+                scope : "world", config, group: "legendary", default: false, type: Boolean,
             },
             legendaryActionHelper : {
-                scope : "world", config, group: "npc-features", default: false, type: Boolean,
+                scope : "world", config, group: "legendary", default: false, type: Boolean,
             }
         };
 

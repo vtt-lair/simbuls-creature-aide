@@ -13,6 +13,10 @@
     "esmodules": [
         "/scripts/creature-aide.js"
     ],  
+    "styles": [
+        "/styles/creature-aide.css",
+        "/styles/action-dialog-app.css"
+    ],
     "includes": [
         "module.json"
     ],
