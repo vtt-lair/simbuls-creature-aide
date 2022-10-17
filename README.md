@@ -31,7 +31,12 @@ A Foundry VTT module that gives the GM the ability to:
     - Matches and active effect of the specified name (case specific)
   ![image](https://user-images.githubusercontent.com/33215552/196030495-5758a842-f651-43f9-9816-3d9a23d40864.png)
 
-### Settings
-![image](https://user-images.githubusercontent.com/33215552/196030576-5161003e-181e-4069-bfec-60e640d608f6.png)
+## Undead Fortitude
+  - Automatically checks actors with the Undead Fortitude feature or the trait set under special traits.
+  - When they are reduced to 0 hp it will prompt the GM to choose the type of damage that was applied.
+  - Then prompts the GM for a Con save for that actor, and will auto heal the NPC if the roll beats the save needed.
+  - There are two settings for levels of checks:
+    - Quick saves will just measure the change in hp and will not measure "overkill".
+    - Advanced saves will query the GM for the amount of damage taken (defaulted to the amount of damage the token received) as a more complex system.
 
 Originally part of [DnD 5e Helpers](https://github.com/trioderegion/dnd5e-helpers)
