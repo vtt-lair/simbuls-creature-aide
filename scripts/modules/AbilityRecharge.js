@@ -1,12 +1,13 @@
-import { logger } from '../logger.js';
+import { logger } from '../../../simbuls-athenaeum/scripts/logger.js';
 import { MODULE } from '../module.js';
-import { queueUpdate } from './update-queue.js';
+import { HELPER } from '../../../simbuls-athenaeum/scripts/helper.js';
+import { queueUpdate } from '../../../simbuls-athenaeum/scripts/update-queue.js';
 
 const NAME = "AbilityRecharge";
 
 export class AbilityRecharge {
     static register(){
-        logger.info("Registering In-Combat Ability Recharge");
+        logger.info(MODULE.data.name, "Registering In-Combat Ability Recharge");
         AbilityRecharge.settings();
         AbilityRecharge.hooks();
     }
@@ -17,9 +18,9 @@ export class AbilityRecharge {
         abilityRecharge : {
             scope : "world", config, group: "recharge", default: 0, type: Number,
             choices : {
-                0 : MODULE.localize("option.arOption.Off"),
-                1 : MODULE.localize("option.arOption.Start"),
-                2 : MODULE.localize("option.arOption.End"),
+                0 : HELPER.localize("option.arOption.Off"),
+                1 : HELPER.localize("option.arOption.Start"),
+                2 : HELPER.localize("option.arOption.End"),
             }
         },
         hideAbilityRecharge : {
@@ -36,13 +37,13 @@ export class AbilityRecharge {
 
     static _updateCombat(combat, changed) {
 
-        const setting = MODULE.setting('abilityRecharge');
+        const setting = HELPER.setting(MODULE.data.name, 'abilityRecharge');
 
         /** bail out if disabled */
         if( setting == 0 ) return;
 
         /** only want the GM to operate and only on a legitimate turn change */
-        if (!MODULE.isTurnChange(combat, changed) || !MODULE.isFirstGM()) return;
+        if (!HELPER.isTurnChange(combat, changed) || !HELPER.isFirstGM()) return;
 
         /** get the turn of interest */
         const next = combat.combatants.get(combat.current.combatantId);
@@ -83,7 +84,7 @@ export class AbilityRecharge {
             // Roll the check
             const roll = await(new Roll("1d6").evaluate({async: true}));
             const success = roll.total >= parseInt(data.recharge.value);
-            const rollMode = MODULE.setting("hideAbilityRecharge") == true ? "blindroll" : "";
+            const rollMode = HELPER.setting(MODULE.data.name, "hideAbilityRecharge") == true ? "blindroll" : "";
 
             // Display a Chat Message
             // @todo rollMode is not being respected...
