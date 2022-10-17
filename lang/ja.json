@@ -1,4 +1,8 @@
 {
+    "SCA.ConfigApp.title": "Simbul's Creature Aide Configuration",
+    "setting.ConfigOption.name": "設定変更",
+    "setting.ConfigOption.label": "Aide Creature設定を開く",
+
     "setting.debug.name": "Extended debug output",
     "setting.debug.hint": "Logs additional debugging information to the console.",
 
@@ -31,5 +35,12 @@
     "setting.lairActionHelper.name":"住処アクションの通知",
     "setting.lairActionHelper.hint" : "アクティブな戦闘参加者から住処アクションを検索し、イニシアチブ20の時点でDMに使用を促します。",
     "setting.legendaryActionHelper.name" : "伝説アクションの通知",
-    "setting.legendaryActionHelper.hint" : "ほかのクリーチャーのターン終了時に、伝説アクションの使用をDMに促します。" 
+    "setting.legendaryActionHelper.hint" : "ほかのクリーチャーのターン終了時に、伝説アクションの使用をDMに促します。",
+
+    "SCA.groupLabel.regen": "自動再生",
+    "SCA.groupLabel.recharge": "Ability Recharge",
+    "SCA.groupLabel.lair": "Lair Action",
+    "SCA.groupLabel.legendary": "Legendary Action",
+    "SCA.groupLabel.undead": "Undead Fortitude",
+    "SCA.groupLabel.misc": "Misc"
 }

@@ -1,4 +1,8 @@
 {
+    "SCA.ConfigApp.title": "Simbul's Creature Aide Configuration",
+    "setting.ConfigOption.name": "Definir Configurações",
+    "setting.ConfigOption.label": "Abrir Configurações do Creature Aide",
+
     "setting.debug.name": "Extended debug output",
     "setting.debug.hint": "Logs additional debugging information to the console.",
 
@@ -31,5 +35,12 @@
     "setting.lairActionHelper.name" : "Solicitação de Ação do Covil",
     "setting.lairActionHelper.hint" : "Solicita ao MJ ações de covil na contagem de iniciativa 20, depois dos combatentes ativos",
     "setting.legendaryActionHelper.name" : "Solicitação de Ação Lendária",
-    "setting.legendaryActionHelper.hint" : "Solicita ao MJ o uso de ação lendária dos combatentes atuais no final do turno de outra criatura."
+    "setting.legendaryActionHelper.hint" : "Solicita ao MJ o uso de ação lendária dos combatentes atuais no final do turno de outra criatura.",
+
+    "SCA.groupLabel.regen": "Regeneração automática",
+    "SCA.groupLabel.recharge": "Ability Recharge",
+    "SCA.groupLabel.lair": "Lair Action",
+    "SCA.groupLabel.legendary": "Legendary Action",
+    "SCA.groupLabel.undead": "Undead Fortitude",
+    "SCA.groupLabel.misc": "Misc"
 }

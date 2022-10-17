@@ -12,10 +12,10 @@ export class AbilityRecharge {
     }
 
     static settings() {
-        const config = true;
+        const config = false;
         const settingsData = {
         abilityRecharge : {
-            scope : "world", config, group: "combat", default: 0, type: Number,
+            scope : "world", config, group: "recharge", default: 0, type: Number,
             choices : {
                 0 : MODULE.localize("option.arOption.Off"),
                 1 : MODULE.localize("option.arOption.Start"),
@@ -23,7 +23,7 @@ export class AbilityRecharge {
             }
         },
         hideAbilityRecharge : {
-            scope : "world", config, group: "combat", default: false, type: Boolean,
+            scope : "world", config, group: "recharge", default: false, type: Boolean,
         }
         };
 

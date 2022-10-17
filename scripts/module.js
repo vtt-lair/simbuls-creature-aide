@@ -1,4 +1,5 @@
 import { logger } from './logger.js';
+import { HelpersSettingsConfig } from './apps/config-app.js';
 
 const NAME = "simbuls-creature-aide";
 const PATH = `/modules/${NAME}`;
@@ -13,6 +14,7 @@ export class MODULE{
     static async register(){
         logger.info("Initializing Module");
         MODULE.globals();
+        MODULE.settings();
     }
 
     static async build(){
@@ -23,6 +25,16 @@ export class MODULE{
 
     static globals() {
         game.dnd5e.npcactions = {};
+    }
+
+    static settings() {
+        game.settings.registerMenu(MODULE.data.name, "helperOptions", {
+            name : MODULE.format("setting.ConfigOption.name"),
+            label : MODULE.format("setting.ConfigOption.label"),
+            icon : "fas fa-user-cog",
+            type : HelpersSettingsConfig,
+            restricted : false,
+        });
     }
 
     /**

@@ -1,4 +1,8 @@
 {
+    "SCA.ConfigApp.title": "Simbul's Creature Aide Configuration",
+    "setting.ConfigOption.name": "Configurer les paramètres",
+    "setting.ConfigOption.label": "Ouvrir les paramètres de Creature Aide",
+
     "setting.debug.name": "Extended debug output",
     "setting.debug.hint": "Logs additional debugging information to the console.",
 
@@ -31,5 +35,12 @@
     "setting.lairActionHelper.name" : "Invite d'Action de Repaire",
     "setting.lairActionHelper.hint" : "Invite le MJ à effectuer des actions de repaire au nombre d'initiatives 20, puise parmi les combattants actifs",
     "setting.legendaryActionHelper.name" : "Invite d'Action Légendaire",
-    "setting.legendaryActionHelper.hint" : "Invite le MJ à utiliser l'action légendaire des combattants actuels à la fin du tour d'une autre créature."
+    "setting.legendaryActionHelper.hint" : "Invite le MJ à utiliser l'action légendaire des combattants actuels à la fin du tour d'une autre créature.",
+
+    "SCA.groupLabel.regen": "Regeneration automatique",
+    "SCA.groupLabel.recharge": "Ability Recharge",
+    "SCA.groupLabel.lair": "Lair Action",
+    "SCA.groupLabel.legendary": "Legendary Action",
+    "SCA.groupLabel.undead": "Undead Fortitude",
+    "SCA.groupLabel.misc": "Misc"
 }

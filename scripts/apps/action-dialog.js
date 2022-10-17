@@ -30,7 +30,7 @@ export class ActionDialog extends Dialog {
         mergeObject(this.position, ActionDialog._lastPosition.get(this.options.id) ?? {});
     }
 
-    static DEFAULT_ID = 'npc-actions-action-dialog';
+    static DEFAULT_ID = 'creature-aide-action-dialog';
     static _lastPosition = new Map(); 
 
     static storePosition(html) {
@@ -43,7 +43,7 @@ export class ActionDialog extends Dialog {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             template : `modules/${MODULE.data.name}/templates/ActionDialog.html`,
-            classes: ["simbul-npc-actions","action-dialog"], 
+            classes: ["simbul-creature-aide","action-dialog"], 
             resizable: false,
             id: ActionDialog.DEFAULT_ID,
             jQuery : true,

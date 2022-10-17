@@ -1,4 +1,8 @@
 {
+    "SCA.ConfigApp.title": "Simbul's Creature Aide Configuration",
+    "setting.ConfigOption.name": "설정 구성",
+    "setting.ConfigOption.label": "Aide Creature 설정 열기",
+
     "setting.debug.name": "Extended debug output",
     "setting.debug.hint": "Logs additional debugging information to the console.",
 
@@ -31,5 +35,12 @@
     "setting.lairActionHelper.name" : "소굴 행동 출력",
     "setting.lairActionHelper.hint" : "GM의 우선권 굴림이 20일 시 소굴 행동을 출력한다.",
     "setting.legendaryActionHelper.name" : "전설적 행동 출력",
-    "setting.legendaryActionHelper.hint" : "GM에게 다른 생물의 턴이 종료될 때 현재 전투원들의 전설적 행동 사용을 출력한다."
+    "setting.legendaryActionHelper.hint" : "GM에게 다른 생물의 턴이 종료될 때 현재 전투원들의 전설적 행동 사용을 출력한다.",
+
+    "SCA.groupLabel.regen": "자동 재생 확인",
+    "SCA.groupLabel.recharge": "Ability Recharge",
+    "SCA.groupLabel.lair": "Lair Action",
+    "SCA.groupLabel.legendary": "Legendary Action",
+    "SCA.groupLabel.undead": "Undead Fortitude",
+    "SCA.groupLabel.misc": "Misc"
 }
