@@ -96,6 +96,10 @@
     padding-top: 5px;
 }
 
+.settings-footer {
+    max-height: 34px;
+}
+
 .action-dialog {
   min-height: 280px !important;
   min-width: 530px !important;
