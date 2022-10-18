@@ -2,7 +2,6 @@
  * Main Module Organizational Tools
  */
 import { MODULE } from './module.js';
-import { logger } from './logger.js';
 
 /**
  * Sub Modules
@@ -15,7 +14,6 @@ import { UndeadFortitude } from './modules/UndeadFortitude.js';
 
 const SUB_MODULES = {
     MODULE,
-    logger,
     AbilityRecharge,
     LegendaryActionManagement,
     LairActionManagement,

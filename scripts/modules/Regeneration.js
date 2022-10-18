@@ -1,13 +1,14 @@
-import { logger } from '../logger.js';
+import { logger } from '../../../simbuls-athenaeum/scripts/logger.js';
 import { MODULE } from '../module.js';
-import { queueUpdate } from './update-queue.js';
+import { HELPER } from '../../../simbuls-athenaeum/scripts/helper.js';
+import { queueUpdate } from '../../../simbuls-athenaeum/scripts/update-queue.js';
 
 const NAME = "Regeneration";
 
 export class Regeneration {
 
     static register() {
-        logger.info("Registering Automatic Regeneration");
+        logger.info(MODULE.data.name, "Registering Automatic Regeneration");
         Regeneration.settings();
         Regeneration.hooks();
     }
@@ -19,7 +20,7 @@ export class Regeneration {
                 scope : "world", config, group: "regen", default: 0, type: Boolean,
             },
             regenBlock : {
-                scope : "world", config, group: "regen", default: MODULE.localize('SCA.regenBlock_default'), type: String,
+                scope : "world", config, group: "regen", default: HELPER.localize('SCA.regenBlock_default'), type: String,
             }
         };
 
@@ -33,20 +34,20 @@ export class Regeneration {
 
     static _updateCombat(combat, changed) {
 
-        const setting = MODULE.setting('autoRegen');
+        const setting = HELPER.setting(MODULE.data.name, 'autoRegen');
 
         /** bail out if disabled */
         if( setting == 0 ) return;
 
         /** only want the GM to operate and only on a legitimate turn change */
-        if (!MODULE.isTurnChange(combat, changed) || !MODULE.isFirstGM()) return;
+        if (!HELPER.isTurnChange(combat, changed) || !HELPER.isFirstGM()) return;
 
         /** get the actor whose turn it just changed to */
         const next = combat.combatants.get(combat.current.combatantId);
         const token = next.token?.object;
 
         if(!token) {
-            logger.debug('Could not find a valid token in the upcoming turn.');
+            logger.debug(MODULE.data.name, 'Could not find a valid token in the upcoming turn.');
             return;
         }
 
@@ -64,17 +65,17 @@ export class Regeneration {
 
     static _getRegenFeature(actor) {
         if(!actor) {
-        logger.debug('Cannot regenerate a null actor');
+        logger.debug(MODULE.data.name, 'Cannot regenerate a null actor');
         return null;
         }
 
         /** before we check anything else, is regen blocked on this actor? */
-        const regenBlockName = MODULE.setting("regenBlock");
+        const regenBlockName = HELPER.setting(MODULE.data.name, "regenBlock");
         const blockEffect = actor.effects?.find(e => e.label === regenBlockName );
         const enabledBlockEffect = !(getProperty(blockEffect ?? {}, 'disabled') ?? true);
 
         if (enabledBlockEffect) {
-            logger.debug(`${actor.name}'s regeneration blocked by ${blockEffect.label}`);
+            logger.debug(MODULE.data.name, `${actor.name}'s regeneration blocked by ${blockEffect.label}`);
             return null;
         }
 
@@ -97,12 +98,12 @@ export class Regeneration {
     static _parseRegenFeature(item) {
 
         /* @todo localize 'hit points'! */
-        const hitPointsString = MODULE.localize("SCA.AutoRegen_HP");
+        const hitPointsString = HELPER.localize("SCA.AutoRegen_HP");
         const regenRegExp = new RegExp(`([0-9]+|[0-9]*d0*[1-9][0-9]*) ${hitPointsString}`);
         let match = item.system.description.value.match(regenRegExp);
 
         if (!match) {
-            logger.debug(`Could not parse ${item.name}'s description for a regeneration value containing ${hitPointsString}`);
+            logger.debug(MODULE.data.name, `Could not parse ${item.name}'s description for a regeneration value containing ${hitPointsString}`);
             return null;
         }
 

@@ -1,5 +1,6 @@
 import { MODULE } from "../module.js";
-import { logger } from "../logger.js";
+import { HELPER } from "../../../simbuls-athenaeum/scripts/helper.js";
+import { logger } from "../../../simbuls-athenaeum/scripts/logger.js";
 
 /**
  * HelpersSettingConfig extends {SettingsConfig}
@@ -37,9 +38,9 @@ export class HelpersSettingsConfig extends SettingsConfig {
     /**@override */
     static get defaultOptions(){
         return mergeObject(super.defaultOptions, {
-            title : MODULE.localize("Helpers"),
+            title : HELPER.localize("Helpers"),
             id : "creature-aide-client-settings",
-            template : `${MODULE.data.path}/templates/ModularSettings.html`,
+            template : `${MODULE.data.athenaeum}/templates/ModularSettings.html`,
             width : 600,
             height : "auto",
             tabs : [
@@ -88,7 +89,7 @@ export class HelpersSettingsConfig extends SettingsConfig {
         const canConfigure = game.user.can("SETTING_MODIFY");
         const settings = Array.from(game.settings.settings);
 
-        options.title = MODULE.format('SCA.ConfigApp.title');
+        options.title = HELPER.format('SCA.ConfigApp.title');
         let data = {
             tabs: duplicate(options.groupLabels),
             hasParent: !!options.subMenuId,
@@ -133,7 +134,7 @@ export class HelpersSettingsConfig extends SettingsConfig {
                     isCheckbox : setting.type === Boolean,
                     isSelect : setting.choices !== undefined,
                     isRange : setting.type === Number && setting.range,
-                    value : MODULE.setting(setting.key),
+                    value : HELPER.setting(MODULE.data.name, setting.key),
                     path: `${setting.namespace}.${setting.key}`
                 });
             } 
@@ -154,7 +155,7 @@ export class HelpersSettingsConfig extends SettingsConfig {
             return acc;
         }, {})
 
-        logger.debug("GET DATA | DATA | ", data);
+        logger.debug(MODULE.data.name, "GET DATA | DATA | ", data);
 
         return {
             user : game.user, canConfigure, systemTitle : game.system.title, data

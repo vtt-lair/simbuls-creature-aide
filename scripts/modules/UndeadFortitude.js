@@ -1,13 +1,14 @@
-import { logger } from '../logger.js';
+import { logger } from '../../../simbuls-athenaeum/scripts/logger.js';
 import { MODULE } from '../module.js';
-import { queueUpdate } from './update-queue.js';
+import { HELPER } from '../../../simbuls-athenaeum/scripts/helper.js';
+import { queueUpdate } from '../../../simbuls-athenaeum/scripts/update-queue.js';
 
 const NAME = "UndeadFortitude";
 
 export class UndeadFortitude {
 
     static register() {
-        logger.info("Registering Undead Fortitude");
+        logger.info(MODULE.data.name, "Registering Undead Fortitude");
         UndeadFortitude.settings();
         UndeadFortitude.defaults();
         UndeadFortitude.hooks();
@@ -38,8 +39,8 @@ export class UndeadFortitude {
         MODULE.applySettings(settingsData);
 
         CONFIG.DND5E.characterFlags.helpersUndeadFortitude = {
-            hint: MODULE.localize("SCA.flagsUndeadFortitudeHint"),
-            name: MODULE.localize("SCA.flagsUndeadFortitude"),
+            hint: HELPER.localize("SCA.flagsUndeadFortitudeHint"),
+            name: HELPER.localize("SCA.flagsUndeadFortitude"),
             section: "Feats",
             default:false,
             type: Boolean
@@ -63,13 +64,13 @@ export class UndeadFortitude {
     static _preUpdateActor(actor, update, options/*, userId*/) {
     
         /* bail if not enabled */
-        if (!(MODULE.setting('undeadFortEnable') > 0)) return;
+        if (!(HELPER.setting(MODULE.data.name, 'undeadFortEnable') > 0)) return;
 
         /* bail if HP isnt being modified */
         if ( getProperty(update, "system.attributes.hp.value") == undefined ) return;
 
         /* Bail if the actor does not have undead fortitude and the flag is not set to true (shakes fist at double negatives)*/
-        if (!actor.items.getName(MODULE.setting("undeadFortName")) && !actor.getFlag("dnd5e","helpersUndeadFortitude")) return;
+        if (!actor.items.getName(HELPER.setting(MODULE.data.name, "undeadFortName")) && !actor.getFlag("dnd5e","helpersUndeadFortitude")) return;
 
         /* collect the needed information and pass it along to the handler */ 
         const originalHp = actor.system.attributes.hp.value;
@@ -80,12 +81,12 @@ export class UndeadFortitude {
             actor,
             finalHp,
             hpDelta,
-            ignoredDamageTypes: MODULE.setting('undeadFortDamageTypes'),
-            baseDc: MODULE.setting('undeadFortDC'),
+            ignoredDamageTypes: HELPER.setting(MODULE.data.name, 'undeadFortDamageTypes'),
+            baseDc: HELPER.setting(MODULE.data.name, 'undeadFortDC'),
             skipCheck: options.skipUndeadCheck,
         };
 
-        logger.debug(`${NAME} data`, data);
+        logger.debug(MODULE.data.name, `${NAME} data`, data);
 
         UndeadFortitude.runSave(data, options);
     }
@@ -98,17 +99,17 @@ export class UndeadFortitude {
 
         /* we have been requested to run the save, check threshold DC */
         if (data.finalHp > MODULE[NAME].hpThreshold) {
-            logger.debug(`${NAME} | Actor has feat, but hasnt hit the threshold`);
+            logger.debug(MODULE.data.name, `${NAME} | Actor has feat, but hasnt hit the threshold`);
             return;
         }
 
         if (options.skipUndeadCheck){
-            logger.debug(`${NAME} | Skipped undead fortitude check via options`);
+            logger.debug(MODULE.data.name, `${NAME} | Skipped undead fortitude check via options`);
             return;
         }
 
         /* get the DC */
-        const mode = MODULE.setting('undeadFortEnable')
+        const mode = HELPER.setting(MODULE.data.name, 'undeadFortEnable')
 
         queueUpdate( async () => {
             const saveInfo = await UndeadFortitude._getUndeadFortSave(data, mode === 2 ? true : false ); 
@@ -122,15 +123,15 @@ export class UndeadFortitude {
 
             if (saveInfo.rollSave) {
                 /* but roll the save if we need to and check */
-                const result = (await data.actor.rollAbilitySave('con', {flavor: `${MODULE.setting('undeadFortName')} - DC ${saveInfo.saveDc}`, rollMode: 'gmroll'})).total;
+                const result = (await data.actor.rollAbilitySave('con', {flavor: `${HELPER.setting(MODULE.data.name, 'undeadFortName')} - DC ${saveInfo.saveDc}`, rollMode: 'gmroll'})).total;
 
                 /* check for unexpected roll outputs (like BetterRolls) and simply output information
                 * note: result == null _should_ account for result === undefined as well.
                 */       
                 if (result == null) {
-                    logger.debug(`${NAME} | Could not parse result of constitution save. Echoing needed DC instead.`);
+                    logger.debug(MODULE.data.name, `${NAME} | Could not parse result of constitution save. Echoing needed DC instead.`);
           
-                    content = MODULE.format('SCA.UndeadFort_failsafe', {tokenName: messageName, dc: saveInfo.saveDc});
+                    content = HELPER.format('SCA.UndeadFort_failsafe', {tokenName: messageName, dc: saveInfo.saveDc});
                 } else {
 
                     /* Otherwise, the roll result we got was valid and usable, so do the calculations ourselves */
@@ -138,16 +139,16 @@ export class UndeadFortitude {
 
                     if (hasSaved) {
                         /* they saved, report and restore to 1 HP */
-                        content = MODULE.format("SCA.UndeadFort_surivalmessage", { tokenName: messageName, total: result });
+                        content = HELPER.format("SCA.UndeadFort_surivalmessage", { tokenName: messageName, total: result });
                         await data.actor.update({'data.attributes.hp.value': 1});
                     } else {
                         /* rolled and failed, but not instantly via damage type */
-                        content = MODULE.format("SCA.UndeadFort_deathmessage", { tokenName: messageName, total: result });
+                        content = HELPER.format("SCA.UndeadFort_deathmessage", { tokenName: messageName, total: result });
                     }
                 }
             } else {
                 /* this is an auto-fail due to damage type, do not update remain at 0 */
-                content = MODULE.format("SCA.UndeadFort_insantdeathmessage", { tokenName: messageName});
+                content = HELPER.format("SCA.UndeadFort_insantdeathmessage", { tokenName: messageName});
             } 
 
             await ChatMessage.create({content, speaker, whisper });
@@ -165,20 +166,20 @@ export class UndeadFortitude {
             saveInfo = await UndeadFortitude.quickCheck(data);
         }
 
-        logger.debug(`${NAME} undead fort. info:`, saveInfo);
+        logger.debug(MODULE.data.name, `${NAME} undead fort. info:`, saveInfo);
 
         return saveInfo;
     }
 
     static quickCheck(data) {
-        return MODULE.buttonDialog({
-            title: MODULE.localize("SCA.UndeadFort_dialogname"),
-            content: MODULE.localize("SCA.UndeadFort_quickdialogcontent"),
+        return HELPER.buttonDialog({
+            title: HELPER.localize("SCA.UndeadFort_dialogname"),
+            content: HELPER.localize("SCA.UndeadFort_quickdialogcontent"),
             buttons: [{
-                label: MODULE.format("SCA.UndeadFort_quickdialogprompt1", { types: data.ignoredDamageTypes }),
+                label: HELPER.format("SCA.UndeadFort_quickdialogprompt1", { types: data.ignoredDamageTypes }),
                 value: { rollSave: false, saveDc: 0 }
             }, {
-                label: MODULE.localize("SCA.UndeadFort_quickdialogprompt2"),
+                label: HELPER.localize("SCA.UndeadFort_quickdialogprompt2"),
                 value: { rollSave: true, saveDc: data.baseDc + data.hpDelta },
             }],
         });
@@ -188,7 +189,7 @@ export class UndeadFortitude {
         const ignoredDamageTypes = data.ignoredDamageTypes;
         if (data.skipUndeadCheck) return;
 
-        let damageQuery = MODULE.format("SCA.UndeadFort_slowdialogcontentquery")
+        let damageQuery = HELPER.format("SCA.UndeadFort_slowdialogcontentquery")
         let content = `
             <form>
                 <div class="form-group">
@@ -200,15 +201,15 @@ export class UndeadFortitude {
     
         return new Promise( async (resolve) => {
             let dialog = new Dialog({
-                title: MODULE.format("SCA.UndeadFort_dialogname"),
+                title: HELPER.format("SCA.UndeadFort_dialogname"),
                 content: content,
                 buttons: {
                     one: {
-                        label: MODULE.format("SCA.UndeadFort_quickdialogprompt1", { types: ignoredDamageTypes }),
+                        label: HELPER.format("SCA.UndeadFort_quickdialogprompt1", { types: ignoredDamageTypes }),
                         callback: () => resolve({rollSave: false, saveDc: 0})
                     },
                     two: {
-                        label: MODULE.format("SCA.UndeadFort_quickdialogprompt2"),
+                        label: HELPER.format("SCA.UndeadFort_quickdialogprompt2"),
                         callback: (html) => {
                             const totalDamage = Number(html.find("#num")[0].value); 
                             return resolve({ rollSave: true, saveDc: data.baseDc + totalDamage})

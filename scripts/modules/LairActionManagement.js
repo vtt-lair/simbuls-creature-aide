@@ -1,7 +1,8 @@
+import { logger } from '../../../simbuls-athenaeum/scripts/logger.js';
 import { MODULE } from '../module.js';
-import { logger } from '../logger.js';
-import { ActionDialog } from '../apps/action-dialog.js'
-import { queueUpdate } from './update-queue.js'
+import { HELPER } from '../../../simbuls-athenaeum/scripts/helper.js';
+import { ActionDialog } from '../../../simbuls-athenaeum/scripts/apps/action-dialog.js'
+import { queueUpdate } from '../../../simbuls-athenaeum/scripts/update-queue.js';
 
 const NAME = "LairActionManagement";
 
@@ -10,7 +11,7 @@ class LairActionDialog extends ActionDialog {
     /** @override */
     constructor(combatants) {
         /* Localize title */
-        const title = MODULE.format("DND5E.LairActionLabel");
+        const title = HELPER.format("DND5E.LairActionLabel");
 
         /* construct an action dialog using only legendary actions */
         super(combatants, {lair: true, title, id: 'lairact-action-dialog'});
@@ -55,15 +56,15 @@ export class LairActionManagement {
     static _createCombatant(combatant) {
 
         /* do not run if not the first GM or the feature is not enabled */
-        if (!MODULE.isFirstGM() || !MODULE.setting('lairActionHelper')) return;
+        if (!HELPER.isFirstGM() || !HELPER.setting(MODULE.data.name, 'lairActionHelper')) return;
 
-        const usesLair = getProperty(combatant, "actor.system.resources.lair.value")
-        const hasLairAction = !!combatant.actor?.items.find((i) => i.system?.activation?.type === "lair")
+        const usesLair = getProperty(combatant, "actor.system.resources.lair.value");
+        const hasLairAction = !!combatant.actor?.items.find((i) => i.system?.activation?.type === "lair");
 
         /* flag this combatant as a lair actor for quick filtering */
-        if (usesLair && hasLairAction){
-            logger.debug(`${NAME} | flagging as combatant that has lair: ${combatant.name}`, combatant);
-            queueUpdate( async () => await combatant.setFlag(MODULE.data.name, 'hasLair', true) )
+        if (usesLair && hasLairAction) {
+            logger.debug(MODULE.data.name, `${NAME} | flagging as combatant that has lair: ${combatant.name}`, combatant);
+            queueUpdate( async () => await combatant.setFlag(MODULE.data.name, 'hasLair', true) );
         }
 
     }
@@ -76,10 +77,10 @@ export class LairActionManagement {
     static _updateCombat(combat, changed) {
 
         /* do not run if not the first GM or the feature is not enabled */
-        if (!MODULE.isFirstGM() || !MODULE.setting('lairActionHelper')) return;
+        if (!HELPER.isFirstGM() || !HELPER.setting(MODULE.data.name, 'lairActionHelper')) return;
 
         /* only trigger lair actions on a legit turn change */
-        if (!MODULE.isTurnChange(combat, changed)) return;
+        if (!HELPER.isTurnChange(combat, changed)) return;
 
         const allLairCombatants = combat.combatants.filter( combatant => combatant.getFlag(MODULE.data.name, 'hasLair') );
 
@@ -93,7 +94,7 @@ export class LairActionManagement {
         /* check if we have wrapped around and simulate its previous initiative */
 
         /* lair init should be inside this range or outside? */
-        const inside = previousInit - currentInit > 0; 
+        const inside = previousInit - currentInit >= 0; 
 
         const containsLair = (combatant) => {
             const init = combatant.actor.system.resources.lair.initiative

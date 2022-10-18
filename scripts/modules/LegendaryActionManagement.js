@@ -1,7 +1,8 @@
+import { logger } from '../../../simbuls-athenaeum/scripts/logger.js';
 import { MODULE } from '../module.js';
-import { logger } from '../logger.js';
-import { ActionDialog } from '../apps/action-dialog.js'
-import { queueUpdate } from './update-queue.js'
+import { HELPER } from '../../../simbuls-athenaeum/scripts/helper.js';
+import { ActionDialog } from '../../../simbuls-athenaeum/scripts/apps/action-dialog.js'
+import { queueUpdate } from '../../../simbuls-athenaeum/scripts/update-queue.js';
 
 const NAME = "LegendaryActionManagement";
 
@@ -12,7 +13,7 @@ class LegendaryActionDialog extends ActionDialog {
   constructor(combatants) {
     
     /* Localize title */
-    const title = MODULE.format("DND5E.LegAct");
+    const title = HELPER.format("DND5E.LegAct");
 
     /* construct an action dialog using only legendary actions */
     super(combatants, {legendary: true, title, id:'legact-action-dialog'});
@@ -61,13 +62,13 @@ export class LegendaryActionManagement {
      */
     static _createCombatant(combatant) {
         /* do not run if not the first GM, but always flag regardless of enable state */
-        if (!MODULE.isFirstGM()) return;
+        if (!HELPER.isFirstGM()) return;
 
         const hasLegendary = !!combatant.actor?.items.find((i) => i.system?.activation?.type === "legendary")
 
         /* flag this combatant as a legendary actor for quick filtering */
         if (hasLegendary) {
-            logger.debug(`${NAME} | flagging as legendary combatant: ${combatant.name}`, combatant);
+            logger.debug(MODULE.data.name, `${NAME} | flagging as legendary combatant: ${combatant.name}`, combatant);
             queueUpdate( async () => await combatant.setFlag(MODULE.data.name, 'hasLegendary', true) )
         }
     }
@@ -80,15 +81,15 @@ export class LegendaryActionManagement {
     */
     static _updateCombat(combat, changed) {
         /* do not run if not the first GM or the feature is not enabled */
-        if (!MODULE.isFirstGM()) return;
+        if (!HELPER.isFirstGM()) return;
 
         /* only trigger legendary actions on a legit turn change */
-        if (!MODULE.isTurnChange(combat, changed)) return;
+        if (!HELPER.isTurnChange(combat, changed)) return;
 
         const previousId = combat.previous?.combatantId;
 
         /* run the leg action helper dialog if enabled */
-        if (MODULE.setting('legendaryActionHelper')) {
+        if (HELPER.setting(MODULE.data.name, 'legendaryActionHelper')) {
             /* Collect legendary combatants (but not the combatant whose turn just ended) */
             let legendaryCombatants = combat.combatants.filter( combatant => combatant.getFlag(MODULE.data.name, 'hasLegendary') && combatant.id != previousId );
 
@@ -103,7 +104,7 @@ export class LegendaryActionManagement {
         }
 
         /* recharge the legendary actions, if enabled */
-        if (MODULE.setting('legendaryActionRecharge')) {
+        if (HELPER.setting(MODULE.data.name, 'legendaryActionRecharge')) {
 
             /* once the dialog for the "in-between" turn has been rendered, recharge legendary actions
             * for the creature whose turn just ended. This is not entirely RAW, but due to order
