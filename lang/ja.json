@@ -1,10 +1,10 @@
 {
-    "SCA.ConfigApp.title": "Simbul's Creature Aide Configuration",
+    "SCA.ConfigApp.title": "Simbul's Creature Aide 設定",
     "setting.ConfigOption.name": "設定変更",
     "setting.ConfigOption.label": "Aide Creature設定を開く",
 
-    "setting.debug.name": "Extended debug output",
-    "setting.debug.hint": "Logs additional debugging information to the console.",
+    "setting.debug.name": "拡張デバッグ出力",
+    "setting.debug.hint": "デバッグ情報をコンソールへより多く出力します。",
 
     "setting.legendaryActionRecharge.name": "ターン開始時に伝説アクションをリセットする",
     "setting.legendaryActionRecharge.hint": "この機能の有効/無効を切り替えます（グローバル設定）",
@@ -62,9 +62,9 @@
     "SCA.flagsUndeadFortitudeHint":"“アンデッドのしぶとさ”の効果を、該当の特徴を持たずともアクターに適用します。",
 
     "SCA.groupLabel.regen": "自動再生",
-    "SCA.groupLabel.recharge": "Ability Recharge",
-    "SCA.groupLabel.lair": "Lair Action",
-    "SCA.groupLabel.legendary": "Legendary Action",
-    "SCA.groupLabel.undead": "Undead Fortitude",
-    "SCA.groupLabel.misc": "Misc"
+    "SCA.groupLabel.recharge": "リチャージ能力",
+    "SCA.groupLabel.lair": "住処アクション",
+    "SCA.groupLabel.legendary": "伝説的アクション",
+    "SCA.groupLabel.undead": "アンデッドのしぶとさ",
+    "SCA.groupLabel.misc": "その他"
 }
