@@ -155,7 +155,7 @@ export class HelpersSettingsConfig extends SettingsConfig {
             return acc;
         }, {})
 
-        logger.debug(MODULE.data.name, "GET DATA | DATA | ", data);
+        logger.debug(game.settings.get(MODULE.data.name, "debug"), "${MODULE.data.name} | GET DATA | DATA | ", data);
 
         return {
             user : game.user, canConfigure, systemTitle : game.system.title, data

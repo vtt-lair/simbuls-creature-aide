@@ -68,7 +68,7 @@ export class LegendaryActionManagement {
 
         /* flag this combatant as a legendary actor for quick filtering */
         if (hasLegendary) {
-            logger.debug(MODULE.data.name, `${NAME} | flagging as legendary combatant: ${combatant.name}`, combatant);
+            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | flagging as legendary combatant: ${combatant.name}`, combatant);
             queueUpdate( async () => await combatant.setFlag(MODULE.data.name, 'hasLegendary', true) )
         }
     }

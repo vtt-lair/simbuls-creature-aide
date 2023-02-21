@@ -47,7 +47,7 @@ export class Regeneration {
         const token = next.token?.object;
 
         if(!token) {
-            logger.debug(MODULE.data.name, 'Could not find a valid token in the upcoming turn.');
+            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | Could not find a valid token in the upcoming turn.`);
             return;
         }
 
@@ -65,7 +65,7 @@ export class Regeneration {
 
     static _getRegenFeature(actor) {
         if(!actor) {
-        logger.debug(MODULE.data.name, 'Cannot regenerate a null actor');
+        logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | Cannot regenerate a null actor`);
         return null;
         }
 
@@ -75,7 +75,7 @@ export class Regeneration {
         const enabledBlockEffect = !(getProperty(blockEffect ?? {}, 'disabled') ?? true);
 
         if (enabledBlockEffect) {
-            logger.debug(MODULE.data.name, `${actor.name}'s regeneration blocked by ${blockEffect.label}`);
+            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | ${actor.name}'s regeneration blocked by ${blockEffect.label}`);
             return null;
         }
 
@@ -103,7 +103,7 @@ export class Regeneration {
         let match = item.system.description.value.match(regenRegExp);
 
         if (!match) {
-            logger.debug(MODULE.data.name, `Could not parse ${item.name}'s description for a regeneration value containing ${hitPointsString}`);
+            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | Could not parse ${item.name}'s description for a regeneration value containing ${hitPointsString}`);
             return null;
         }
 
