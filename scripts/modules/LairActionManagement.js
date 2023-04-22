@@ -63,7 +63,7 @@ export class LairActionManagement {
 
         /* flag this combatant as a lair actor for quick filtering */
         if (usesLair && hasLairAction) {
-            logger.debug(MODULE.data.name, `${NAME} | flagging as combatant that has lair: ${combatant.name}`, combatant);
+            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | flagging as combatant that has lair: ${combatant.name}`, combatant);
             queueUpdate( async () => await combatant.setFlag(MODULE.data.name, 'hasLair', true) );
         }
 

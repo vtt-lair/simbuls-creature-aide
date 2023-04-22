@@ -61,8 +61,7 @@ export class UndeadFortitude {
     /* for a pre hook, the initiating user can handle updates
     * as they have initiated this update already.
     */
-    static _preUpdateActor(actor, update, options/*, userId*/) {
-    
+    static _preUpdateActor(actor, update, options) {
         /* bail if not enabled */
         if (!(HELPER.setting(MODULE.data.name, 'undeadFortEnable') > 0)) return;
 
@@ -86,7 +85,7 @@ export class UndeadFortitude {
             skipCheck: options.skipUndeadCheck,
         };
 
-        logger.debug(MODULE.data.name, `${NAME} data`, data);
+        logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} data`, data);
 
         UndeadFortitude.runSave(data, options);
     }
@@ -99,12 +98,12 @@ export class UndeadFortitude {
 
         /* we have been requested to run the save, check threshold DC */
         if (data.finalHp > MODULE[NAME].hpThreshold) {
-            logger.debug(MODULE.data.name, `${NAME} | Actor has feat, but hasnt hit the threshold`);
+            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | Actor has feat, but hasnt hit the threshold`);
             return;
         }
 
         if (options.skipUndeadCheck){
-            logger.debug(MODULE.data.name, `${NAME} | Skipped undead fortitude check via options`);
+            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | Skipped undead fortitude check via options`);
             return;
         }
 
@@ -112,7 +111,7 @@ export class UndeadFortitude {
         const mode = HELPER.setting(MODULE.data.name, 'undeadFortEnable')
 
         queueUpdate( async () => {
-            const saveInfo = await UndeadFortitude._getUndeadFortSave(data, mode === 2 ? true : false ); 
+            const saveInfo = await UndeadFortitude._getUndeadFortitudeSave(data, options, mode === 2 ? true : false ); 
             const speaker = ChatMessage.getSpeaker({actor: data.actor, token: data.actor.token});
             const whisper = game.users.filter(u => u.isGM).map(u => u.id)
             let content = '';
@@ -129,7 +128,7 @@ export class UndeadFortitude {
                 * note: result == null _should_ account for result === undefined as well.
                 */       
                 if (result == null) {
-                    logger.debug(MODULE.data.name, `${NAME} | Could not parse result of constitution save. Echoing needed DC instead.`);
+                    logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | Could not parse result of constitution save. Echoing needed DC instead.`);
           
                     content = HELPER.format('SCA.UndeadFort_failsafe', {tokenName: messageName, dc: saveInfo.saveDc});
                 } else {
@@ -155,37 +154,56 @@ export class UndeadFortitude {
         });
     }
 
-    static async _getUndeadFortSave(data, fullCheck = false) {
+    static async _getUndeadFortitudeSave(data, options, fullCheck = false) {
 
         let saveInfo = {};
         if (fullCheck) {
             /* full check where we ask for the total damage */
-            saveInfo = await UndeadFortitude.fullCheck(data);
+            saveInfo = await UndeadFortitude.fullCheck(data, options);
         } else {
             /* quick check (no spillover) */
-            saveInfo = await UndeadFortitude.quickCheck(data);
+            saveInfo = await UndeadFortitude.quickCheck(data, options);
         }
 
-        logger.debug(MODULE.data.name, `${NAME} undead fort. info:`, saveInfo);
-
+        logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} undead fort. info:`, saveInfo);
         return saveInfo;
     }
 
-    static quickCheck(data) {
-        return HELPER.buttonDialog({
-            title: HELPER.localize("SCA.UndeadFort_dialogname"),
-            content: HELPER.localize("SCA.UndeadFort_quickdialogcontent"),
-            buttons: [{
-                label: HELPER.format("SCA.UndeadFort_quickdialogprompt1", { types: data.ignoredDamageTypes }),
-                value: { rollSave: false, saveDc: 0 }
-            }, {
-                label: HELPER.localize("SCA.UndeadFort_quickdialogprompt2"),
-                value: { rollSave: true, saveDc: data.baseDc + data.hpDelta },
-            }],
-        });
+    static checkRadiantCritical(options, ignoredDamageTypes) {
+        if (!options.damageItem) return false;        
+        if (options.damageItem.critical) return true;
+
+        for (let di of options.damageItem.damageDetail) {
+            for (let did of (di ?? [])) {
+                if (ignoredDamageTypes.toLowerCase().indexOf(did.type) > -1) return true;
+            }
+        }
+        return false;
     }
 
-    static fullCheck(data) {
+    static quickCheck(data, options) {
+        if (game.modules.get("midi-qol")?.active) {
+            if (UndeadFortitude.checkRadiantCritical(options, data.ignoredDamageTypes)) {
+                return { rollSave: false, saveDC: 0 };
+            } else {
+                return { rollSave: true, saveDc: data.baseDc + data.hpDelta };
+            }
+        } else {
+            return HELPER.buttonDialog({
+                title: HELPER.localize("SCA.UndeadFort_dialogname"),
+                content: HELPER.localize("SCA.UndeadFort_quickdialogcontent"),
+                buttons: [{
+                    label: HELPER.format("SCA.UndeadFort_quickdialogprompt1", { types: data.ignoredDamageTypes }),
+                    value: { rollSave: false, saveDc: 0 }
+                }, {
+                    label: HELPER.localize("SCA.UndeadFort_quickdialogprompt2"),
+                    value: { rollSave: true, saveDc: data.baseDc + data.hpDelta },
+                }],
+            });
+        }        
+    }
+
+    static fullCheck(data, options) {
         const ignoredDamageTypes = data.ignoredDamageTypes;
         if (data.skipUndeadCheck) return;
 
