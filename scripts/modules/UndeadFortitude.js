@@ -62,7 +62,6 @@ export class UndeadFortitude {
     * as they have initiated this update already.
     */
     static _preUpdateActor(actor, update, options) {
-        debugger;
         /* bail if not enabled */
         if (!(HELPER.setting(MODULE.data.name, 'undeadFortEnable') > 0)) return;
 
@@ -89,10 +88,6 @@ export class UndeadFortitude {
         logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} data`, data);
 
         UndeadFortitude.runSave(data, options);
-
-        if (!options.fortitudeSaveFailed) {
-            return false;            
-        }
     }
 
     /* Decides which save type to run, should it proc, and handles rolling.
