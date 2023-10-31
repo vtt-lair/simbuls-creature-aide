@@ -74,7 +74,14 @@ export class UndeadFortitude {
         /* collect the needed information and pass it along to the handler */ 
         const originalHp = actor.system.attributes.hp.value;
         const finalHp = getProperty(update, "system.attributes.hp.value") ?? originalHp;
-        const hpDelta = originalHp - finalHp;
+        
+        // default the damage to this calculation
+        let hpDelta = originalHp - finalHp;
+        // if you have midi-QOL then you'll have the applied damage
+        if (options.damageItem) {
+            hpDelta = options.damageItem.appliedDamage
+        }
+        
 
         const data = {
             actor,
