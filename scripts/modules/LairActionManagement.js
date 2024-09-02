@@ -58,7 +58,7 @@ export class LairActionManagement {
         /* do not run if not the first GM or the feature is not enabled */
         if (!HELPER.isFirstGM() || !HELPER.setting(MODULE.data.name, 'lairActionHelper')) return;
 
-        const usesLair = getProperty(combatant, "actor.system.resources.lair.value");
+        const usesLair = foundry.utils.getProperty(combatant, "actor.system.resources.lair.value");
         const hasLairAction = !!combatant.actor?.items.find((i) => i.system?.activation?.type === "lair");
 
         /* flag this combatant as a lair actor for quick filtering */
@@ -109,7 +109,7 @@ export class LairActionManagement {
         }
 
         const hasHp = (combatant) => {
-            return getProperty(combatant.actor, 'system.attributes.hp.value') ?? 0 > 0;
+            return foundry.utils.getProperty(combatant.actor, 'system.attributes.hp.value') ?? 0 > 0;
         }
 
         const filterCondition = inside ? containsLair : excludesLair;
