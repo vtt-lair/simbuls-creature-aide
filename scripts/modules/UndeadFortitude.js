@@ -66,17 +66,19 @@ export class UndeadFortitude {
         if (!(HELPER.setting(MODULE.data.name, 'undeadFortEnable') > 0)) return;
 
         /* bail if HP isnt being modified */
-        if ( getProperty(update, "system.attributes.hp.value") == undefined ) return;
+        if (foundry.utils.getProperty(update, "system.attributes.hp.value") == undefined ) return;
 
         /* Bail if the actor does not have undead fortitude and the flag is not set to true (shakes fist at double negatives)*/
         if (!actor.items.getName(HELPER.setting(MODULE.data.name, "undeadFortName")) && !actor.getFlag("dnd5e","helpersUndeadFortitude")) return;
 
         /* collect the needed information and pass it along to the handler */ 
         const originalHp = actor.system.attributes.hp.value;
-        const finalHp = getProperty(update, "system.attributes.hp.value") ?? originalHp;
+        const finalHp = foundry.utils.getProperty(update, "system.attributes.hp.value") ?? originalHp;
         
         // default the damage to this calculation
         let hpDelta = originalHp - finalHp;
+        if (originalHp === 0 && finalHp === 0) return;
+
         // if you have midi-QOL then you'll have the applied damage
         if (options.damageItem) {
             hpDelta = options.damageItem.appliedDamage
@@ -146,7 +148,7 @@ export class UndeadFortitude {
                     if (hasSaved) {
                         /* they saved, report and restore to 1 HP */
                         content = HELPER.format("SCA.UndeadFort_surivalmessage", { tokenName: messageName, total: result });
-                        await data.actor.update({'data.attributes.hp.value': 1});
+                        await data.actor.update({'system.attributes.hp.value': 1});
                     } else {
                         /* rolled and failed, but not instantly via damage type */
                         content = HELPER.format("SCA.UndeadFort_deathmessage", { tokenName: messageName, total: result });

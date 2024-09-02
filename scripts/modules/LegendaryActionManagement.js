@@ -94,8 +94,8 @@ export class LegendaryActionManagement {
             let legendaryCombatants = combat.combatants.filter( combatant => combatant.getFlag(MODULE.data.name, 'hasLegendary') && combatant.id != previousId );
 
             /* only prompt for actions from alive creatures with leg acts remaining */
-            legendaryCombatants = legendaryCombatants.filter( combatant => getProperty(combatant.actor, 'system.resources.legact.value') ?? 0 > 0 );
-            legendaryCombatants = legendaryCombatants.filter( combatant => getProperty(combatant.actor, 'system.attributes.hp.value') ?? 0 > 0 );
+            legendaryCombatants = legendaryCombatants.filter( combatant => foundry.utils.getProperty(combatant.actor, 'system.resources.legact.value') ?? 0 > 0 );
+            legendaryCombatants = legendaryCombatants.filter( combatant => foundry.utils.getProperty(combatant.actor, 'system.attributes.hp.value') ?? 0 > 0 );
 
             /* send list of combantants to the action dialog subclass */
             if (legendaryCombatants.length > 0) {
@@ -142,7 +142,7 @@ export class LegendaryActionManagement {
             return;
         }
 
-        let legact = getProperty(combatant.actor, 'system.resources.legact');
+        let legact = foundry.utils.getProperty(combatant.actor, 'system.resources.legact');
 
         /* does this creature have the legendary action counter? */
         if (!!legact && legact.value !== null) {
@@ -152,7 +152,7 @@ export class LegendaryActionManagement {
 
                 /* send the reset update and sheet refresh */
                 queueUpdate( async () => {
-                    const newActor = await combatant.actor.update({'data.resources.legact.value': legact.max});
+                    const newActor = await combatant.actor.update({'system.resources.legact.value': legact.max});
                     newActor.sheet.render(false);
                 });
             }

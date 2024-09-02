@@ -37,7 +37,7 @@ export class HelpersSettingsConfig extends SettingsConfig {
 
     /**@override */
     static get defaultOptions(){
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             title : HELPER.localize("Helpers"),
             id : "creature-aide-client-settings",
             template : `${MODULE.data.athenaeum}/templates/ModularSettings.html`,
@@ -86,12 +86,12 @@ export class HelpersSettingsConfig extends SettingsConfig {
 
     /**@override */
     getData(options){
-        const canConfigure = game.user.can("SETTING_MODIFY");
+        const canConfigure = game.user.can("SETTING_MODIFY") || game.user.can("SETTINGS_MODIFY");
         const settings = Array.from(game.settings.settings);
 
         options.title = HELPER.format('SCA.ConfigApp.title');
         let data = {
-            tabs: duplicate(options.groupLabels),
+            tabs: foundry.utils.duplicate(options.groupLabels),
             hasParent: !!options.subMenuId,
             parentMenu: options.parentMenu
         }

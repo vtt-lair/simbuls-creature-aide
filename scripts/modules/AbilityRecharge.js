@@ -82,7 +82,7 @@ export class AbilityRecharge {
 
         queueUpdate(async () => {
             // Roll the check
-            const roll = await(new Roll("1d6").evaluate({async: true}));
+            const roll = await(new Roll("1d6").evaluate());
             const success = roll.total >= parseInt(data.recharge.value);
             const rollMode = HELPER.setting(MODULE.data.name, "hideAbilityRecharge") == true ? "blindroll" : "";
 

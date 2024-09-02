@@ -72,7 +72,7 @@ export class Regeneration {
         /** before we check anything else, is regen blocked on this actor? */
         const regenBlockName = HELPER.setting(MODULE.data.name, "regenBlock");
         const blockEffect = actor.effects?.find(e => e.name ?? e.label === regenBlockName );
-        const enabledBlockEffect = !(getProperty(blockEffect ?? {}, 'disabled') ?? true);
+        const enabledBlockEffect = !(foundry.utils.getProperty(blockEffect ?? {}, 'disabled') ?? true);
 
         if (enabledBlockEffect) {
             logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | ${actor.name}'s regeneration blocked by ${blockEffect.name ?? blockEffect.label}`);
@@ -90,7 +90,7 @@ export class Regeneration {
     }
 
     static _getActorHP(actor) {
-        const actorHP = getProperty(actor, 'system.attributes.hp');
+        const actorHP = foundry.utils.getProperty(actor, 'system.attributes.hp');
         return actorHP;
     }
 
@@ -121,7 +121,7 @@ export class Regeneration {
         const rollRegenCallback = () => queueUpdate( async () => {
 
             /** roll the regen expression */
-            const rollObject = await new Roll(regen).evaluate({async: true});
+            const rollObject = await new Roll(regen).evaluate();
             let regenRoll = rollObject.total;
 
             /** apply the damage to the token */
