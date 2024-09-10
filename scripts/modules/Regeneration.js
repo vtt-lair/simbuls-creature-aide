@@ -71,11 +71,11 @@ export class Regeneration {
 
         /** before we check anything else, is regen blocked on this actor? */
         const regenBlockName = HELPER.setting(MODULE.data.name, "regenBlock");
-        const blockEffect = actor.effects?.find(e => e.name ?? e.label === regenBlockName );
+        const blockEffect = actor.effects?.find(e => e.name === regenBlockName );
         const enabledBlockEffect = !(foundry.utils.getProperty(blockEffect ?? {}, 'disabled') ?? true);
 
         if (enabledBlockEffect) {
-            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | ${actor.name}'s regeneration blocked by ${blockEffect.name ?? blockEffect.label}`);
+            logger.debug(game.settings.get(MODULE.data.name, "debug"), `${NAME} | ${actor.name}'s regeneration blocked by ${blockEffect.name}`);
             return null;
         }
 
