@@ -1,4 +1,9 @@
+# v 1.2.1
+
+* Fixed an issue where any effect on a creature with regeneration would stop the regeneration
+
 # v 1.2.0
+
 * v12 compatibility
 * fix issue with Undead Fortitude popups
   
