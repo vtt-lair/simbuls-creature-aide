@@ -58,7 +58,8 @@ export class LairActionManagement {
         /* do not run if not the first GM or the feature is not enabled */
         if (!HELPER.isFirstGM() || !HELPER.setting(MODULE.data.name, 'lairActionHelper')) return;
 
-        const usesLair = foundry.utils.getProperty(combatant, "actor.system.resources.lair.value");
+        /* new sheet doesn't use the bool but both sheets start with lair init null */
+        const usesLair = foundry.utils.getProperty(combatant, "actor.system.resources.lair.initiative") != null;
         const hasLairAction = !!combatant.actor?.items.find((i) => i.system?.activation?.type === "lair");
 
         /* flag this combatant as a lair actor for quick filtering */
